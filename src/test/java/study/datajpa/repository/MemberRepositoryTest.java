@@ -20,6 +20,7 @@ class MemberRepositoryTest {
 
     @Test
     public void testMember() {
+        System.out.println(memberRepository.getClass());  // class com.sun.proxy.$ProxyXXX
         Member member = new Member("memberA");
         Member savedMember = memberRepository.save(member);
 
