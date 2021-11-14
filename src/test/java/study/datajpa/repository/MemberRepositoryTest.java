@@ -11,6 +11,7 @@ import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -148,5 +149,29 @@ class MemberRepositoryTest {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void returnType() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        //컬렉션 - 결과 없음
+        List<Member> result = memberRepository.findListByUsername("없는이름");
+        System.out.println("result.size() = " + result.size());  // 0
+
+        //단건 조회 - 결과 없음
+        Member findMember = memberRepository.findMemberByUsername("없는 이름");
+        System.out.println(findMember);  // null
+
+        //단건 조회 - 결과 2건 이상
+        Member member3 = new Member("BBB", 10);
+        memberRepository.save(member3);
+        Member bbb = memberRepository.findMemberByUsername("BBB");  //javax.persistence.NonUniqueResultException 예외 발생
+
+        //Optional
+        Optional<Member> optional = memberRepository.findOptionalByUsername("AAA");
     }
 }
