@@ -13,6 +13,8 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.List;
@@ -27,6 +29,7 @@ class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
+    @PersistenceContext EntityManager em;  // 같은 트랜잭션 안에서는 같은 엔티티 매니저를 사용함.
 
     @Test
     public void testMember() {
@@ -217,6 +220,10 @@ class MemberRepositoryTest {
 
         //when
         int resultCount = memberRepository.bulkAgePlus(20);
+//        em.clear();
+
+        List<Member> result = memberRepository.findByUsername("member5");
+        Member member5 = result.get(0);  // age=40 (영속성 컨텍스트-1차캐시에서 가져와서 아직 변경X)
 
         //then
         assertThat(resultCount).isEqualTo(3);
