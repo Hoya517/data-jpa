@@ -30,7 +30,7 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public Page<Member> list(Pageable pageable) {
+    public Page<Member> list(@PageableDefault(size = 5) Pageable pageable) {
         Page<Member> page = memberRepository.findAll(pageable);
         return page;
     }
