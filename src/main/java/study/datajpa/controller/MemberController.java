@@ -1,6 +1,7 @@
 package study.datajpa.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -30,8 +31,11 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public Page<Member> list(@PageableDefault(size = 5) Pageable pageable) {
-        Page<Member> page = memberRepository.findAll(pageable);
+    public Page<Member> list(
+            @Qualifier("member") Pageable memberPageable,
+            @Qualifier("order") Pageable orderPageable,
+    ) {
+        Page<Member> page = memberRepository.findAll(memberPageable);
         return page;
     }
 
